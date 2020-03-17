@@ -6,17 +6,30 @@ const movieSelect = document.getElementById('movie')
 
 let ticketPrice = +movieSelect.value
 
+//Save selected movie index and price
+const setMovieData = (movieIndex, moviePrice) => {
+    window.localStorage.setItem('selectedMovieIndex', movieIndex)
+    window.localStorage.setItem('selectedMoviePrice', moviePrice)
+}
+
 //Update total and count
 const updateSelectedCount = () => {
     const selectedSeats = document.querySelectorAll('.row .seat.selected')
     const selectedSeatsCount = selectedSeats.length
     count.innerText = selectedSeatsCount
     total.innerText = selectedSeatsCount * ticketPrice
+
+    const seatsIndex = [...selectedSeats].map(seat => {
+        return [...seats].indexOf(seat)
+    })
+
+    window.localStorage.setItem('selectedSeats', JSON.stringify(seatsIndex))
 }
 
 //Movie select event
 movieSelect.addEventListener('change', e => {
     ticketPrice = +e.target.value
+    setMovieData(e.target.selectedIndex, e.target.value)
     updateSelectedCount()
 })
 
